@@ -2,7 +2,8 @@
 
 ## References and Resources
 
-List any resources used here, or simply put `N/A` if not applicable.
+https://stackoverflow.com/questions/46189066/edit-an-item-in-android-list-view
+https://stackoverflow.com/questions/31390847/how-to-check-if-listview-item-is-checked-or-not
 
 ## Verbal Collaboration
 
