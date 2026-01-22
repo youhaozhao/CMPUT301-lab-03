@@ -1,5 +1,10 @@
 # CMPUT 301 : Lab 3 Participation Exercise
 
+## Student Details
+
+- **Full Name:** `Youhao Zhao`
+- **CCID:** `youhao`
+
 ## References and Resources
 
 https://stackoverflow.com/questions/46189066/edit-an-item-in-android-list-view
