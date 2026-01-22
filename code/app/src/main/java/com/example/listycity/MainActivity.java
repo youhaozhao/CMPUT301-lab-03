@@ -1,19 +1,36 @@
 package com.example.listycity;
 
 import android.os.Bundle;
-import android.widget.ArrayAdapter;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 import java.util.ArrayList;
-import java.util.Arrays;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements AddCityFragment.AddCityDialogListener, EditCityFragment.EditCityDialogListener {
 
-    private ArrayList<String> dataList;
+    private ArrayList<City> dataList;
     private ListView cityList;
-    private ArrayAdapter<String> cityAdapter;
+    private CityArrayAdapter cityAdapter;
+    final int[] selectedPosition = {-1};
+
+    @Override
+    public void addCity(City city) {
+        cityAdapter.add(city);
+        cityAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void editCity(City city) {
+        if (selectedPosition[0] != -1) {
+            dataList.set(selectedPosition[0], city);
+        }
+        cityAdapter.notifyDataSetChanged();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,16 +38,34 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         String[] cities = {
-                "Edmonton", "Vancouver", "Moscow",
-                "Sydney", "Berlin", "Vienna",
-                "Tokyo", "Beijing", "Osaka", "New Delhi"
+                "Edmonton", "Vancouver", "Toronto",
         };
 
-        dataList = new ArrayList<>();
-        dataList.addAll(Arrays.asList(cities));
+        String[] provinces = {
+                "AB", "BC", "ON"
+        };
+
+        dataList = new ArrayList<City>();
+        for (int i = 0; i < cities.length; i++) {
+            dataList.add(new City(cities[i], provinces[i]));
+        }
 
         cityList = findViewById(R.id.city_list);
-        cityAdapter = new ArrayAdapter<>(this, R.layout.content, dataList);
+        cityAdapter = new CityArrayAdapter(this, dataList);
         cityList.setAdapter(cityAdapter);
+
+        FloatingActionButton fab = findViewById(R.id.button_add_city);
+        fab.setOnClickListener(v -> {
+            new AddCityFragment().show(getSupportFragmentManager(), "Add City");
+        });
+
+        cityList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                selectedPosition[0] = position;
+                new EditCityFragment().show(getSupportFragmentManager(), "Edit City");
+            }
+        });
+
     }
 }
