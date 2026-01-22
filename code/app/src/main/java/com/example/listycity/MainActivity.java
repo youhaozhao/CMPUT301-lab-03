@@ -1,8 +1,6 @@
 package com.example.listycity;
 
 import android.os.Bundle;
-import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ListView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,7 +12,6 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity implements AddCityFragment.AddCityDialogListener, EditCityFragment.EditCityDialogListener {
 
     private ArrayList<City> dataList;
-    private ListView cityList;
     private CityArrayAdapter cityAdapter;
     final int[] selectedPosition = {-1};
 
@@ -45,26 +42,21 @@ public class MainActivity extends AppCompatActivity implements AddCityFragment.A
                 "AB", "BC", "ON"
         };
 
-        dataList = new ArrayList<City>();
+        dataList = new ArrayList<>();
         for (int i = 0; i < cities.length; i++) {
             dataList.add(new City(cities[i], provinces[i]));
         }
 
-        cityList = findViewById(R.id.city_list);
+        ListView cityList = findViewById(R.id.city_list);
         cityAdapter = new CityArrayAdapter(this, dataList);
         cityList.setAdapter(cityAdapter);
 
         FloatingActionButton fab = findViewById(R.id.button_add_city);
-        fab.setOnClickListener(v -> {
-            new AddCityFragment().show(getSupportFragmentManager(), "Add City");
-        });
+        fab.setOnClickListener(v -> new AddCityFragment().show(getSupportFragmentManager(), "Add City"));
 
-        cityList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                selectedPosition[0] = position;
-                new EditCityFragment().show(getSupportFragmentManager(), "Edit City");
-            }
+        cityList.setOnItemClickListener((parent, view, position, id) -> {
+            selectedPosition[0] = position;
+            new EditCityFragment().show(getSupportFragmentManager(), "Edit City");
         });
 
     }
