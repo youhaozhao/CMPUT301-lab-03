@@ -19,6 +19,14 @@ public class EditCityFragment extends DialogFragment {
 
     private EditCityFragment.EditCityDialogListener listener;
 
+    public static EditCityFragment newInstance(City city) {
+        Bundle args = new Bundle();
+        args.putSerializable("city", city);
+        EditCityFragment fragment = new EditCityFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
+
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
@@ -37,6 +45,11 @@ public class EditCityFragment extends DialogFragment {
                 LayoutInflater.from(getContext()).inflate(R.layout.fragment_add_city, null);
         EditText editCityName = view.findViewById(R.id.edit_text_city_text);
         EditText editProvinceName = view.findViewById(R.id.edit_text_province_text);
+
+        City city = (City) getArguments().getSerializable("city");
+        editCityName.setText(city.getName());
+        editProvinceName.setText(city.getProvince());
+
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         return builder
                 .setView(view)
